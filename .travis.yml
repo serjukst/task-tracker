@@ -1,18 +1,15 @@
 language: node_js
 node_js:
 - '10'
-
 before_install:
 - npm install -g @angular/cli
 install: npm install
-
 branches:
   only:
   - master
-
-
 deploy:
   skip_cleanup: true
   provider: heroku
   app: task-tracker20
-  api_key: 
+  api_key:
+    secure: i8yklcFBCGHPIm/d7W6A9wHB8O69PHEkBOxPwiawy6xkUIVxWy4AUcYHFqVS3HbhLxu+SulBs+eEMiVk9LUysZVVL5OH95q5MUeOoLefccvVzIHl6LTpt+GvUi6iELgrS5GyB4Jkxf4w2/mzmncVvl4XV3yYuYm5Zq6gXqlwAgHmOCJTdgBDUKahvJK8JdgALPG0e6tIpLZEcqVGEkR4rSBPzFasMybU9RsAVnnxa0SfvH3dXNSn2EoRbNHiulw9Br2R6BejYhrrAE/433g2gxqDmMTjncRTp/hbdE1iXRFyeyYsZzPGW/HtFGnRTA/EsHKZdjIm2NSAPhSFURt61pNaF8E1ox+1tBsRW7UHk2cOimUjXuYh99VQiytalEkmBWCcxfGJmUJILAZtB4D0VQmAJF6W0y7zKRs4cxeE5aZdtiXB1wYkhRdY1AZj0xch/mUyuL52nEiLNC2CmlaHOTCroxE6zRn26hFwQ3cpWrou7R/UWfJBEShKGx3nFItfBcA3OiVKFVoqwPnKdDXolniXLHXu+cM8dF23vqS5fOPD1pX42xvoY5Y2ARhINW7krkfkH06dFGbhPHjW6Py7GBQHnJFD5ezq4od1tUkLq01C7F5Z+P86H6h/pNf5kwMIiDNCEszdsaqz0RDsfWJ6YFJsyrYPWy4Dl6cemFYVYuU=
