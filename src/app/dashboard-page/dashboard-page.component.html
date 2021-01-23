@@ -1,0 +1,54 @@
+<div class="container">
+  <button
+    mat-raised-button
+    color="primary"
+    class="create-task-button"
+    (click)="openDialog()"
+  >
+    <mat-icon>add_task</mat-icon>
+    Create task
+  </button>
+
+  <div class="content-wrapper">
+    <div class="column to-do">
+      <h2 class="column-title" [matBadge]="countToDoTask" matBadgeColor="accent">To Do</h2>
+      <mat-divider></mat-divider>
+      <div class="task-card" *ngFor="let task of tasks">
+        <app-task-card
+          [task]="task"
+          *ngIf="task.status === 'todo'"
+        ></app-task-card>
+      </div>
+    </div>
+    <div class="column in-progress">
+      <h2 class="column-title" [matBadge]="countProgressTask">In Progress</h2>
+      <mat-divider></mat-divider>
+      <div class="task-card" *ngFor="let task of tasks">
+        <app-task-card
+          [task]="task"
+          *ngIf="task.status === 'progress'"
+        ></app-task-card>
+      </div>
+    </div>
+    <div class="column in-review">
+      <h2 class="column-title" [matBadge]="countReviewTask">In Review</h2>
+      <mat-divider></mat-divider>
+      <div class="task-card" *ngFor="let task of tasks">
+        <app-task-card
+          [task]="task"
+          *ngIf="task.status === 'review'"
+        ></app-task-card>
+      </div>
+    </div>
+    <div class="column done">
+      <h2 class="column-title" [matBadge]="countDoneTask">Done</h2>
+      <mat-divider></mat-divider>
+      <div class="task-card" *ngFor="let task of tasks">
+        <app-task-card
+          [task]="task"
+          *ngIf="task.status === 'done'"
+        ></app-task-card>
+      </div>
+    </div>
+  </div>
+</div>

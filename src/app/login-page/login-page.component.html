@@ -1,42 +1,15 @@
 <div class="container">
-  <div class="form">
-    <mat-form-field appearance="fill">
-      <mat-label>Enter your email</mat-label>
-      <input
-        matInput
-        placeholder="pat@example.com"
-        [formControl]="email"
-        required
-      />
-      <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Enter your password</mat-label>
-      <input matInput [type]="hide ? 'password' : 'text'" />
-      <button
-        mat-icon-button
-        matSuffix
-        (click)="hide = !hide"
-        [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hide"
-      >
-        <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-      </button>
-    </mat-form-field>
-    <button mat-raised-button color="primary" class="login-btn">
-      <mat-icon>email</mat-icon>
-      Login with email
-    </button>
+  <div class="card">
+    <app-email-login-form></app-email-login-form>
     <mat-divider></mat-divider>
-    <h3 class="text-center">or You can choose another one:</h3>
-    <button mat-raised-button color="accent" class="login-btn">
+    <button mat-raised-button color="accent" (click)="loginWithGoogle()">
       <mat-icon>lock_open</mat-icon>
       Login with Google
     </button>
-    <button mat-raised-button color="warn" class="login-btn">
+    <h3 class="text-center">or you can create account</h3>
+    <button mat-raised-button color="warn">
       <mat-icon>login</mat-icon>
-      Login with Facebook
+      Register
     </button>
   </div>
 </div>

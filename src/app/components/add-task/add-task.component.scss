@@ -1,0 +1,37 @@
+.add-task-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 1rem;
+
+  &__selections {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.selection {
+  &_first-column {
+    display: flex;
+    flex-direction: column;
+    margin-right: 1rem;
+  }
+
+  &_second-column {
+    display: flex;
+    flex-direction: column;
+    margin-right: 1rem;
+  }
+}
+
+.submit-btn {
+  margin: 0.8rem 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+mat-dialog-actions {
+  justify-content: space-between;
+}

@@ -1,0 +1,42 @@
+.task {
+  width: 200px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+
+  &__title {
+    margin: 0;
+  }
+
+  &__content {
+
+    &_description {
+      font-size: .8rem;
+      height: 50px;
+      overflow: hidden;
+    }
+  
+    &_labels {
+      span {
+        padding: .3rem;
+        margin-right: .3rem;
+        border-radius: .3rem;
+        background-color: #673AB7; //TODO: Change to variable
+        font-size: .6rem;
+        color: #fff; //TODO: Change to variable
+      }
+    }
+  }
+
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+
+    &_avatar{
+      background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+      background-size: cover;
+    }
+  }
+}

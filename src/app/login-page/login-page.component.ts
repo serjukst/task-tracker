@@ -1,5 +1,9 @@
+import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import {
+  MatSnackBar,
+} from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -7,17 +11,34 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent implements OnInit {
-  email = new FormControl('', [Validators.required, Validators.email]);
-  hide = true;
-  constructor() {}
+  constructor(
+    private auth: AuthService,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
-  getErrorMessage() {
-    if (this.email.hasError('required')) {
-      return 'You must enter a value';
-    }
-
-    return this.email.hasError('email') ? 'Not a valid email' : '';
+  loginWithGoogle() {
+    this.auth
+      .loginWithGoogle()
+      .then((result) => {
+        const credential = (<any>result).credential;
+        return {
+          token: credential.accessToken,
+          user: result.user.uid
+        };
+      })
+      .then((credential) => {
+        //console.log(credential);
+        this.router.navigate(['dashboard']);
+      })
+      .catch((error) => {
+        this.snackBar.open(error.message, null, {
+          duration: 4000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      });
   }
 }

@@ -1,0 +1,60 @@
+mat-spinner {
+  margin: 200px auto ;
+
+}
+
+.add-task-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 1rem;
+
+  &__selections {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.selection {
+  &_first-column {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+  }
+
+  &_second-column {
+    display: flex;
+    flex-direction: column;
+    margin-right: 1rem;
+    width: 35%;
+  }
+}
+
+.submit-btn {
+  margin: 0.8rem 0;
+}
+
+.container {
+  padding: 2rem;
+  background-color: #fff;
+}
+
+.layout-2-column {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.column-1, .column-2 {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons {
+  display: flex;
+
+  button {
+    margin-right: 0.5rem;
+  }
+}

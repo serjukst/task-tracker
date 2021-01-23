@@ -1,0 +1,104 @@
+<mat-spinner *ngIf="!task"></mat-spinner>
+<div class="container">
+  <form class="add-task-form" [formGroup]="form" *ngIf="task">
+    <mat-form-field appearance="fill">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" required />
+      <mat-error *ngIf="form.get('summary').errors?.required"
+        >Field is required</mat-error
+      >
+    </mat-form-field>
+    <div class="add-task-form__selections">
+      <div class="selection_first-column">
+        <div class="layout-2-column">
+          <div class="column-1">
+            <mat-form-field appearance="fill">
+              <mat-label>Task Type</mat-label>
+              <mat-select formControlName="type">
+                <mat-option
+                  *ngFor="let type of taskTypes"
+                  [value]="type.viewValue"
+                >
+                  {{ type.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Priority</mat-label>
+              <mat-select formControlName="priority">
+                <mat-option
+                  *ngFor="let priority of priorityTypes"
+                  [value]="priority.viewValue"
+                >
+                  {{ priority.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="column-2">
+            <mat-form-field appearance="fill">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option
+                  *ngFor="let status of taskStatus"
+                  [value]="status.value"
+                >
+                  {{ status.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Resolution</mat-label>
+              <mat-select formControlName="resolution">
+                <mat-option
+                  *ngFor="let resolution of taskResolution"
+                  [value]="resolution.value"
+                >
+                  {{ resolution.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Summary</mat-label>
+          <input matInput formControlName="summary" required />
+          <mat-error *ngIf="form.get('summary').errors?.required"
+            >Field is required</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description" />
+        </mat-form-field>
+      </div>
+
+      <div class="selection_second-column">
+        <mat-form-field appearance="fill">
+          <mat-label>Assignee</mat-label>
+          <mat-select formControlName="assignee">
+            <mat-option value="unassigned"> Unassigned </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Due Date</mat-label>
+          <input matInput formControlName="dueDate" [matDatepicker]="picker" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="buttons">
+      <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+      <button mat-raised-button color="warn">Cancel</button>
+    </div>
+  </form>
+</div>

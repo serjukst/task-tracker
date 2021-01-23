@@ -1,0 +1,41 @@
+<mat-card class="task">
+  <mat-card-header>
+    <mat-card-title>
+      <p class="task__title">
+        <a [routerLink]="task.id">{{task.title }} {{ task.id }}</a>
+      </p>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="task__content">
+      <p class="task__content_description">{{ task.description }}</p>
+      <div class="task__content_labels">
+        <span *ngFor="let label of task?.labels">
+          {{ label }}
+        </span>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-footer>
+    <div class="task__footer">
+      <p class="task__details">
+        <ng-container [ngSwitch]="task.type">
+          <mat-icon *ngSwitchCase="'New Feature'" aria-hidden="false" >add_box</mat-icon>
+          <mat-icon *ngSwitchCase="'Epic'" aria-hidden="false" >flash_on</mat-icon>
+          <mat-icon *ngSwitchCase="'User Story'" aria-hidden="false" >bookmark</mat-icon>
+          <mat-icon *ngSwitchCase="'Task'" aria-hidden="false" >check_box</mat-icon>
+          <mat-icon *ngSwitchCase="'Bug'" aria-hidden="false" >bug_report</mat-icon>
+        </ng-container>
+
+        <ng-container [ngSwitch]="task.priority">
+          <mat-icon *ngSwitchCase="'Trivial'" aria-hidden="false" >south</mat-icon>
+          <mat-icon *ngSwitchCase="'Blocker'" aria-hidden="false" >block</mat-icon>
+          <mat-icon *ngSwitchCase="'Critical'" aria-hidden="false" >warning</mat-icon>
+          <mat-icon *ngSwitchCase="'Major'" aria-hidden="false" >double_arrow</mat-icon>
+          <mat-icon *ngSwitchCase="'Minor'" aria-hidden="false" >expand_more</mat-icon>
+        </ng-container>
+      </p>
+      <div mat-card-avatar class="task__footer_avatar"></div>
+    </div>
+  </mat-card-footer>
+</mat-card>

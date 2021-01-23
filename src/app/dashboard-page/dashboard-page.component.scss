@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.create-task-button {
+  max-width: 200px;
+  margin-bottom: 1rem;
+}
+
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  width: 250px;
+}
+
+
+.column-title {
+  margin: 1rem 0 0;
+}
+
+.mat-divider {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+#mat-badge-content-0 {
+  background-color: #4E73DF;
+}
+#mat-badge-content-1 {
+  background-color: #FDE83E;
+}
+#mat-badge-content-2 {
+  background-color: #36E4F7;
+}
+#mat-badge-content-3 {
+  background-color: #1BC789;
+}

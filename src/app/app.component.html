@@ -1,1 +1,29 @@
-<router-outlet></router-outlet>
+<mat-toolbar>
+  <a mat-button routerLink='/'>Task tracker</a>
+  <span class="spacer"></span>
+  <button mat-button>
+    <mat-icon>person</mat-icon>
+    Profile
+  </button>
+  <button mat-button (click)="signOut()">
+    <mat-icon>exit_to_app</mat-icon>
+    Logout
+  </button>
+</mat-toolbar>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" opened>
+    <div class="sidenav">
+      <button mat-button routerLink="dashboard">
+        <mat-icon>dashboard</mat-icon>
+        Dashboard
+      </button>
+      <button mat-button>
+        <mat-icon>filter_alt</mat-icon>
+        My task
+      </button>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
