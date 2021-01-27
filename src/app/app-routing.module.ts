@@ -1,3 +1,4 @@
+import { RegisterPageComponent } from './register-page/register-page.component';
 import { TaskPageComponent } from './task-page/task-page.component';
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -10,9 +11,14 @@ const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToItems = () => redirectLoggedInTo(['dashboard']);
 
 const routes: Routes = [
-    {
+  {
     path: 'login',
     component: LoginPageComponent,
+    ...canActivate(redirectLoggedInToItems)
+  },
+  {
+    path: 'register',
+    component: RegisterPageComponent,
     ...canActivate(redirectLoggedInToItems)
   },
   {

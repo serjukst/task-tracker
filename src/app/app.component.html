@@ -1,11 +1,11 @@
 <mat-toolbar>
   <a mat-button routerLink='/'>Task tracker</a>
   <span class="spacer"></span>
-  <button mat-button>
+  <button mat-button *ngIf="user">
     <mat-icon>person</mat-icon>
-    Profile
+    {{user?.displayName}}
   </button>
-  <button mat-button (click)="signOut()">
+  <button mat-button (click)="signOut()" *ngIf="authState">
     <mat-icon>exit_to_app</mat-icon>
     Logout
   </button>
@@ -17,7 +17,7 @@
         <mat-icon>dashboard</mat-icon>
         Dashboard
       </button>
-      <button mat-button>
+      <button mat-button  *ngIf="authState">
         <mat-icon>filter_alt</mat-icon>
         My task
       </button>

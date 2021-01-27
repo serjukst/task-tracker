@@ -1,3 +1,4 @@
+import { FirestoreService } from './../services/firestore.service';
 import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
 export class LoginPageComponent implements OnInit {
   constructor(
     private auth: AuthService,
+    private fs: FirestoreService,
     private snackBar: MatSnackBar,
     private router: Router
   ) {}
@@ -23,14 +25,8 @@ export class LoginPageComponent implements OnInit {
     this.auth
       .loginWithGoogle()
       .then((result) => {
-        const credential = (<any>result).credential;
-        return {
-          token: credential.accessToken,
-          user: result.user.uid
-        };
-      })
-      .then((credential) => {
-        //console.log(credential);
+        const { uid, email, displayName } = result.user
+        this.fs.addUser({ uid, email, displayName });
         this.router.navigate(['dashboard']);
       })
       .catch((error) => {

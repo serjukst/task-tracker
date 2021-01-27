@@ -1,9 +1,3 @@
-export interface IUser {
-  email: string;
-  password: string;
-  returnSecureToken: boolean;
-}
-
 export interface ITask {
   title: string;
   description: string;
@@ -17,9 +11,17 @@ export interface ITask {
   created: Date;
   updated: Date;
   id: number;
+  customID: string;
 }
 
 export interface ISelectOptions {
   value: string;
   viewValue: string;
+}
+
+export interface IUser {
+  uid: string;
+  email: string;
+  displayName: string;
+  password?: string;
 }

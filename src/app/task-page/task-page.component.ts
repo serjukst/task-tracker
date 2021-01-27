@@ -1,19 +1,21 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { ISelectOptions, ITask } from './../interfaces';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-task-page',
   templateUrl: './task-page.component.html',
-  styleUrls: ['./task-page.component.scss']
+  styleUrls: ['./task-page.component.scss'],
 })
 export class TaskPageComponent implements OnInit, OnDestroy {
+  private unsub$ = new Subject<void>();
   panelOpenState = false;
   public task: ITask;
-  public form: FormGroup =new FormGroup({
+  public form: FormGroup = new FormGroup({
     summary: new FormControl('', [Validators.required]),
     description: new FormControl(),
     type: new FormControl(),
@@ -24,19 +26,18 @@ export class TaskPageComponent implements OnInit, OnDestroy {
     dueDate: new FormControl(),
     title: new FormControl('', [Validators.required]),
   });
-  sub: Subscription;
 
   taskStatus: ISelectOptions[] = [
     { value: 'todo', viewValue: 'To Do' },
     { value: 'progress', viewValue: 'In Progress' },
     { value: 'review', viewValue: 'In Review' },
     { value: 'done', viewValue: 'Done' },
-  ]
+  ];
 
   taskResolution: ISelectOptions[] = [
     { value: 'resolved', viewValue: 'Resolved' },
     { value: 'unresolved', viewValue: 'Unresolved' },
-  ]
+  ];
 
   taskTypes: ISelectOptions[] = [
     { value: 'feature', viewValue: 'New Feature' },
@@ -54,35 +55,36 @@ export class TaskPageComponent implements OnInit, OnDestroy {
     { value: 'minor', viewValue: 'Minor' },
   ];
 
-  constructor(private route: ActivatedRoute, private fs: FirestoreService) { 
-    
-  }
+  constructor(private route: ActivatedRoute, private fs: FirestoreService) {}
 
   ngOnInit(): void {
-    this.sub = this.route.params.subscribe((params:Params) => {
-      this.fs.tasks.subscribe( (tasks: ITask[]) => {
-        this.task = tasks.find(task => task.id === +params.id);
-        this.form.setValue({
-          summary: this.task.title,
-          description: this.task.description,
-          type: this.task.type,
-          priority: this.task.priority,
-          assignee: this.task.assignee,
-          status: this.task.status,
-          resolution: this.task.resolution || 'Unresolved',
-          dueDate: 1/22/2021,
-          title: this.task.title,
-        });
-    });
-  })
- 
+    this.route.params
+      .pipe(takeUntil(this.unsub$))
+      .subscribe((params: Params) => {
+        this.fs
+          .getTaskById(params.id)
+          .pipe(takeUntil(this.unsub$))
+          .subscribe((task: ITask) => {
+            this.task = task;
+            this.form.setValue({
+              summary: task?.title,
+              description: task.description,
+              type: task.type,
+              priority: task.priority,
+              assignee: task.assignee,
+              status: task.status,
+              resolution: task.resolution || 'Unresolved',
+              dueDate: 1 / 22 / 2021,
+              title: task.title,
+            });
+          });
+      });
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.unsub$.next();
+    this.unsub$.complete();
   }
 
-  submit() {
-  }
-
+  submit() {}
 }

@@ -1,0 +1,72 @@
+<form class="register-form" [formGroup]="form">
+  <h2 class="text-center">Register</h2>
+  <mat-form-field appearance="fill">
+    <mat-label>Enter your full name</mat-label>
+    <input
+      matInput
+      placeholder="Full name"
+      formControlName="displayName"
+      required
+    />
+    <mat-error *ngIf="form.get('displayName').errors?.required"
+      >Please, enter your full name</mat-error
+    >
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Enter your email</mat-label>
+    <input
+      matInput
+      placeholder="email@example.com"
+      formControlName="email"
+      required
+    />
+    <mat-error *ngIf="form.get('email').errors?.required"
+      >Please, enter your email</mat-error
+    >
+    <mat-error *ngIf="form.get('email').errors?.email"
+      >Please, enter correct email</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Enter your password</mat-label>
+    <input
+      matInput
+      formControlName="password"
+      required
+      [type]="hide ? 'password' : 'text'"
+    />
+
+    <button
+      mat-icon-button
+      matSuffix
+      (click)="hide = !hide"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide"
+    >
+      <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+    </button>
+    <mat-error *ngIf="form.get('password').errors?.required"
+      >Please, enter your password</mat-error
+    >
+    <mat-error *ngIf="form.get('password').errors?.minlength">
+      Password must be at least
+      {{ form.get("password").errors.minlength.requiredLength }}
+      characters long. It now has
+      {{ form.get("password").errors.minlength.actualLength }}
+      characters
+    </mat-error>
+  </mat-form-field>
+
+  <button
+    type="submit"
+    mat-raised-button
+    color="primary"
+    class="submit-btn"
+    [disabled]="form.touched && form.invalid"
+    (click)="submit()"
+  >
+    <mat-icon>register</mat-icon>
+    Registration
+  </button>
+</form>

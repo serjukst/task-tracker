@@ -40,7 +40,7 @@ export class AddTaskComponent implements OnInit {
       dueDate: new FormControl(),
     });
 
-    this.fs.tasks
+    this.fs.getTask()
     .pipe(take(1))
     .subscribe((result) => {
       const taskIds: number[] = result.map(task => task.id);

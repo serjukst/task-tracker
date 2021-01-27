@@ -34,6 +34,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatBadgeModule } from '@angular/material/badge';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { RegisterPageComponent } from './register-page/register-page.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     TaskCardComponent,
     AddTaskComponent,
     TaskPageComponent,
+    RegisterPageComponent,
   ],
   imports: [
     BrowserModule,
