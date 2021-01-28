@@ -23,7 +23,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.fs
-      .getTask()
+      .getTasks()
       .pipe(takeUntil(this.unsub$))
       .subscribe((result) => {
         this.tasks = result;

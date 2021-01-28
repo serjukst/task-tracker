@@ -62,7 +62,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsub$))
       .subscribe((params: Params) => {
         this.fs
-          .getTaskById(params.id)
+          .getTasksById(params.id)
           .pipe(takeUntil(this.unsub$))
           .subscribe((task: ITask) => {
             this.task = task;

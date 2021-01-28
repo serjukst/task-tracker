@@ -1,60 +1,79 @@
-import { ISelectOptions, ITask } from './../../interfaces';
+import { takeUntil } from 'rxjs/operators';
+import { ITask } from './../../interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FirestoreService } from 'src/app/services/firestore.service';
-import { take } from 'rxjs/internal/operators'
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-add-task',
   templateUrl: './add-task.component.html',
   styleUrls: ['./add-task.component.scss'],
 })
-export class AddTaskComponent implements OnInit {
-  maxId: number;
+export class AddTaskComponent implements OnInit, OnDestroy {
+  private unsub$ = new Subject<void>();
+  public nextSequence: number;
+  public form: FormGroup;
 
-  form: FormGroup;
-  taskTypes: ISelectOptions[] = [
-    { value: 'feature', viewValue: 'New Feature' },
-    { value: 'epic', viewValue: 'Epic' },
-    { value: 'story', viewValue: 'User Story' },
-    { value: 'task', viewValue: 'Task' },
-    { value: 'bug', viewValue: 'Bug' },
+  public taskTypes: { value: string }[] = [
+    { value: 'New Feature' },
+    { value: 'Epic' },
+    { value: 'User Story' },
+    { value: 'Task' },
+    { value: 'Bug' },
   ];
 
-  priorityTypes: ISelectOptions[] = [
-    { value: 'major', viewValue: 'Major' },
-    { value: 'trivial', viewValue: 'Trivial' },
-    { value: 'blocker', viewValue: 'Blocker' },
-    { value: 'critical', viewValue: 'Critical' },
-    { value: 'minor', viewValue: 'Minor' },
+  public priorityTypes: { value: string }[] = [
+    { value: 'Major' },
+    { value: 'Trivial' },
+    { value: 'Blocker' },
+    { value: 'Critical' },
+    { value: 'Minor' },
   ];
+
+  public usersList = [{ value: 'Unassigned' }];
 
   constructor(private fs: FirestoreService) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      summary: new FormControl(null, [Validators.required]),
-      description: new FormControl(null),
+      title: new FormControl('Task', [Validators.required]),
+      description: new FormControl(null, [Validators.required]),
+      summary: new FormControl(null),
       type: new FormControl(this.taskTypes[0].value),
       priority: new FormControl(this.priorityTypes[0].value),
-      assignee: new FormControl('Unassigned'),
-      dueDate: new FormControl(),
+      assignee: new FormControl(this.usersList[0].value),
+      dueDate: new FormControl(new Date()),
     });
 
-    this.fs.getTask()
-    .pipe(take(1))
-    .subscribe((result) => {
-      const taskIds: number[] = result.map(task => task.id);
-      this.maxId = Math.max(...taskIds);
-    })
+    this.fs
+      .getTasks()
+      .pipe(takeUntil(this.unsub$))
+      .subscribe((result) => {
+        this.nextSequence = result.length + 1;
+      });
+
+    this.fs
+      .getUsers()
+      .pipe(takeUntil(this.unsub$))
+      .subscribe((result) => {
+        result.forEach((user) => {
+          this.usersList.push({ value: user.displayName });
+        });
+      });
   }
 
-  submit() {
+  ngOnDestroy(): void {
+    this.unsub$.next();
+    this.unsub$.complete();
+  }
+
+  public submit(): void {
     const newTask: ITask = {
       ...this.form.value,
-      title: 'Task',
-      labels: ['bug'],
-      id: this.maxId + 1,
+      sequence: this.nextSequence,
       status: 'todo',
+      resolution: 'Unresolved',
+      created: new Date(),
     };
     this.fs.addTask(newTask);
   }

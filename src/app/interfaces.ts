@@ -1,22 +1,17 @@
 export interface ITask {
   title: string;
-  description: string;
-  labels?: String[];
+  description: string;  
+  summary: string;  
   priority: string;
-  reporter: string;
   resolution: string;
   status: string;
   type: string;
   assignee: string;
   created: Date;
   updated: Date;
-  id: number;
+  dueDate: Date;
+  sequence: number;
   customID: string;
-}
-
-export interface ISelectOptions {
-  value: string;
-  viewValue: string;
 }
 
 export interface IUser {
@@ -24,4 +19,9 @@ export interface IUser {
   email: string;
   displayName: string;
   password?: string;
+}
+
+export interface ISelectOptions {
+  value: string;
+  viewValue: string;
 }

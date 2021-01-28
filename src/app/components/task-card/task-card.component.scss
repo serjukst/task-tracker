@@ -35,8 +35,13 @@
     padding: 1rem;
 
     &_avatar{
-      background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background-color: #673AB7;
+      font-weight: bold;
+      color: #fff;
     }
   }
 }

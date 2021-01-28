@@ -2,13 +2,21 @@
 <mat-divider></mat-divider>
 <mat-dialog-content class="mat-typography">
   <form class="add-task-form" [formGroup]="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" required />
+      <mat-error *ngIf="form.get('title').errors?.required"
+        >Field is required</mat-error
+      >
+    </mat-form-field>
+
     <div class="add-task-form__selections">
       <div class="selection_first-column">
         <mat-form-field appearance="fill">
         <mat-label>Task Type</mat-label>
         <mat-select formControlName="type">
-          <mat-option *ngFor="let type of taskTypes" [value]="type.viewValue">
-            {{ type.viewValue }}
+          <mat-option *ngFor="let type of taskTypes" [value]="type.value">
+            {{ type.value }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -18,9 +26,9 @@
         <mat-select formControlName="priority">
           <mat-option
             *ngFor="let priority of priorityTypes"
-            [value]="priority.viewValue"
+            [value]="priority.value"
           >
-            {{ priority.viewValue }}
+            {{ priority.value }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -30,8 +38,11 @@
         <mat-form-field appearance="fill">
         <mat-label>Assignee</mat-label>
         <mat-select formControlName="assignee">
-          <mat-option value="unassigned">
-            Unassigned
+          <mat-option
+            *ngFor="let user of usersList"
+            [value]="user.value"
+          >
+            {{ user.value }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -48,16 +59,16 @@
     </div>
 
     <mat-form-field appearance="fill">
-      <mat-label>Summary</mat-label>
-      <input matInput formControlName="summary" required />
-      <mat-error *ngIf="form.get('summary').errors?.required"
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" required />
+      <mat-error *ngIf="form.get('description').errors?.required"
         >Field is required</mat-error
       >
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Description</mat-label>
-      <input matInput formControlName="description" />
+      <mat-label>Summary</mat-label>
+      <input matInput formControlName="summary" />
     </mat-form-field>
   </form>
 </mat-dialog-content>

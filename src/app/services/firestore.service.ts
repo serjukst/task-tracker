@@ -7,10 +7,16 @@ import { Injectable } from '@angular/core';
 export class FirestoreService {
   constructor(private afs: AngularFirestore) {}
 
-  public getTask(): Observable<ITask[]> {
+  public getTasks(): Observable<ITask[]> {
     return this.afs
       .collection<ITask>('tasks')
       .valueChanges({ idField: 'customID' });
+  }
+
+  public getUsers(): Observable<IUser[]> {
+    return this.afs
+      .collection<IUser>('users')
+      .valueChanges();
   }
 
   public addUser(user: IUser):void {
@@ -30,7 +36,7 @@ export class FirestoreService {
     this.afs.doc<ITask>(`tasks/${task.customID}`).update(task);
   }
 
-  public getTaskById(customID: string): Observable<ITask> {
+  public getTasksById(customID: string): Observable<ITask> {
     return this.afs.doc<ITask>(`tasks/${customID}`).valueChanges();
   }
 }

@@ -2,25 +2,20 @@
   <mat-card-header>
     <mat-card-title>
       <p class="task__title">
-        <a [routerLink]="task.customID">{{task.title }} {{ task.id }}</a>
+        <a [routerLink]="task.customID">{{task.title }} {{ task.sequence }}</a>
       </p>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <div class="task__content">
       <p class="task__content_description">{{ task.description }}</p>
-      <div class="task__content_labels">
-        <span *ngFor="let label of task?.labels">
-          {{ label }}
-        </span>
-      </div>
     </div>
   </mat-card-content>
   <mat-card-footer>
     <div class="task__footer">
       <p class="task__details">
         <ng-container [ngSwitch]="task.type">
-          <mat-icon *ngSwitchCase="'New Feature'" aria-hidden="false" >add_box</mat-icon>
+          <mat-icon *ngSwitchCase="'New Feature'" aria-hidden="false" color="primary">add_box</mat-icon>
           <mat-icon *ngSwitchCase="'Epic'" aria-hidden="false" >flash_on</mat-icon>
           <mat-icon *ngSwitchCase="'User Story'" aria-hidden="false" >bookmark</mat-icon>
           <mat-icon *ngSwitchCase="'Task'" aria-hidden="false" >check_box</mat-icon>
@@ -35,7 +30,9 @@
           <mat-icon *ngSwitchCase="'Minor'" aria-hidden="false" >expand_more</mat-icon>
         </ng-container>
       </p>
-      <div mat-card-avatar class="task__footer_avatar"></div>
+      <div mat-card-avatar class="task__footer_avatar">
+        {{ task?.assignee[0] | uppercase}}
+      </div>
     </div>
   </mat-card-footer>
 </mat-card>
