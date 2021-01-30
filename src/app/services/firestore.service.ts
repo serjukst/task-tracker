@@ -23,7 +23,7 @@ export class FirestoreService {
     this.afs.collection<IUser>('users').doc(user.uid).set(user);
   }
 
-  public getCurrentUser(userId):Observable<IUser> {
+  public getCurrentUser(userId: string):Observable<IUser> {
     return this.afs.doc<IUser>(`users/${userId}`).valueChanges();
   }
 

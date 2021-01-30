@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { AddTaskComponent } from '../components/add-task/add-task.component';
 import { takeUntil } from 'rxjs/internal/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -19,23 +20,38 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   public countReviewTask: number;
   public countDoneTask: number;
 
-  constructor(private fs: FirestoreService, public dialog: MatDialog) {}
+  constructor(
+    private fs: FirestoreService,
+    public dialog: MatDialog,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.fs
       .getTasks()
       .pipe(takeUntil(this.unsub$))
-      .subscribe((result) => {
-        this.tasks = result;
-        this.countToDoTask = result.filter((el) => el.status === 'To Do').length;
-        this.countProgressTask = result.filter(
-          (el) => el.status === 'In Progress'
-        ).length;
-        this.countReviewTask = result.filter(
-          (el) => el.status === 'In Review'
-        ).length;
-        this.countDoneTask = result.filter((el) => el.status === 'Done').length;
-      });
+      .subscribe(
+        (result) => {
+          this.tasks = result;
+          this.countToDoTask = result.filter(
+            (el) => el.status === 'To Do'
+          ).length;
+          this.countProgressTask = result.filter(
+            (el) => el.status === 'In Progress'
+          ).length;
+          this.countReviewTask = result.filter(
+            (el) => el.status === 'In Review'
+          ).length;
+          this.countDoneTask = result.filter(
+            (el) => el.status === 'Done'
+          ).length;
+        },
+        (err) => {
+          if (err.code === 'permission-denied') {
+            this.router.navigate(['/login']);
+          }
+        }
+      );
   }
 
   ngOnDestroy(): void {
