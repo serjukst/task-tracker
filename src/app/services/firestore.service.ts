@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { ITask, IUser } from './../interfaces';
+import { ITask, IUser } from '../shared/interfaces';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 

@@ -3,7 +3,7 @@ mat-spinner {
 
 }
 
-.add-task-form {
+.edit-task-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -37,6 +37,7 @@ mat-spinner {
 .container {
   padding: 2rem;
   background-color: #fff;
+  height: calc(100% - 64px);
 }
 
 .layout-2-column {

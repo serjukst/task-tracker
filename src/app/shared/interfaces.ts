@@ -25,3 +25,7 @@ export interface ISelectOptions {
   value: string;
   viewValue: string;
 }
+
+export interface ISelectionOptions {
+  value: string;
+}

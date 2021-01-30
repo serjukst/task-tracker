@@ -1,5 +1,7 @@
+import { taskTypes, priorityTypes, taskStatus, taskResolution } from './../../shared/constants';
+import { ISelectionOptions } from './../../shared/interfaces';
 import { takeUntil } from 'rxjs/operators';
-import { ITask } from './../../interfaces';
+import { ITask } from '../../shared/interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FirestoreService } from 'src/app/services/firestore.service';
@@ -14,23 +16,10 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   public nextSequence: number;
   public form: FormGroup;
 
-  public taskTypes: { value: string }[] = [
-    { value: 'New Feature' },
-    { value: 'Epic' },
-    { value: 'User Story' },
-    { value: 'Task' },
-    { value: 'Bug' },
-  ];
+  public taskTypes: ISelectionOptions[] = taskTypes;
+  public priorityTypes: ISelectionOptions[] = priorityTypes;
 
-  public priorityTypes: { value: string }[] = [
-    { value: 'Major' },
-    { value: 'Trivial' },
-    { value: 'Blocker' },
-    { value: 'Critical' },
-    { value: 'Minor' },
-  ];
-
-  public usersList = [{ value: 'Unassigned' }];
+  public usersList: ISelectionOptions[] = [{ value: 'Unassigned' }];
 
   constructor(private fs: FirestoreService) {}
 
@@ -57,6 +46,11 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsub$))
       .subscribe((result) => {
         result.forEach((user) => {
+          const isDublicateUser = this.usersList.find(el => el.value === user.displayName);
+          if (isDublicateUser) {
+            return;
+          }
+
           this.usersList.push({ value: user.displayName });
         });
       });
@@ -68,12 +62,14 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   }
 
   public submit(): void {
+    const { dueDate } = this.form.value;
     const newTask: ITask = {
       ...this.form.value,
       sequence: this.nextSequence,
-      status: 'todo',
-      resolution: 'Unresolved',
-      created: new Date(),
+      status: taskStatus[0].value,
+      resolution: taskResolution[0].value,
+      dueDate: dueDate.getTime(),
+      created: new Date().getTime(),
     };
     this.fs.addTask(newTask);
   }

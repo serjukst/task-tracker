@@ -1,9 +1,15 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject, Subscription } from 'rxjs';
-import { ISelectOptions, ITask } from './../interfaces';
-import { FirestoreService } from 'src/app/services/firestore.service';
+import {
+  taskResolution,
+  taskTypes,
+  priorityTypes,
+  taskStatus,
+} from './../shared/constants';
+import { ISelectionOptions, ITask } from './../shared/interfaces';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
+import { FirestoreService } from 'src/app/services/firestore.service';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -13,47 +19,25 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class TaskPageComponent implements OnInit, OnDestroy {
   private unsub$ = new Subject<void>();
-  panelOpenState = false;
+
   public task: ITask;
   public form: FormGroup = new FormGroup({
-    summary: new FormControl('', [Validators.required]),
-    description: new FormControl(),
+    title: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
+    summary: new FormControl(),
     type: new FormControl(),
     priority: new FormControl(),
     assignee: new FormControl(),
     status: new FormControl(),
     resolution: new FormControl(),
     dueDate: new FormControl(),
-    title: new FormControl('', [Validators.required]),
   });
 
-  taskStatus: ISelectOptions[] = [
-    { value: 'todo', viewValue: 'To Do' },
-    { value: 'progress', viewValue: 'In Progress' },
-    { value: 'review', viewValue: 'In Review' },
-    { value: 'done', viewValue: 'Done' },
-  ];
-
-  taskResolution: ISelectOptions[] = [
-    { value: 'resolved', viewValue: 'Resolved' },
-    { value: 'unresolved', viewValue: 'Unresolved' },
-  ];
-
-  taskTypes: ISelectOptions[] = [
-    { value: 'feature', viewValue: 'New Feature' },
-    { value: 'epic', viewValue: 'Epic' },
-    { value: 'story', viewValue: 'User Story' },
-    { value: 'task', viewValue: 'Task' },
-    { value: 'bug', viewValue: 'Bug' },
-  ];
-
-  priorityTypes: ISelectOptions[] = [
-    { value: 'major', viewValue: 'Major' },
-    { value: 'trivial', viewValue: 'Trivial' },
-    { value: 'blocker', viewValue: 'Blocker' },
-    { value: 'critical', viewValue: 'Critical' },
-    { value: 'minor', viewValue: 'Minor' },
-  ];
+  public taskStatus: ISelectionOptions[] = taskStatus;
+  public taskResolution: ISelectionOptions[] = taskResolution;
+  public taskTypes: ISelectionOptions[] = taskTypes;
+  public priorityTypes: ISelectionOptions[] = priorityTypes;
+  public usersList: ISelectionOptions[] = [{ value: 'Unassigned' }];
 
   constructor(private route: ActivatedRoute, private fs: FirestoreService) {}
 
@@ -66,18 +50,35 @@ export class TaskPageComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.unsub$))
           .subscribe((task: ITask) => {
             this.task = task;
+            console.log(task);
             this.form.setValue({
-              summary: task?.title,
-              description: task.description,
-              type: task.type,
-              priority: task.priority,
-              assignee: task.assignee,
-              status: task.status,
-              resolution: task.resolution || 'Unresolved',
-              dueDate: 1 / 22 / 2021,
               title: task.title,
+              description: task.description,
+              summary: task?.summary,
+              type: task?.type,
+              priority: task?.priority,
+              assignee: task?.assignee,
+              status: task?.status,
+              resolution: task?.resolution,
+              dueDate: new Date(task.dueDate),
             });
           });
+      });
+
+    this.fs
+      .getUsers()
+      .pipe(takeUntil(this.unsub$))
+      .subscribe((result) => {
+        result.forEach((user) => {
+          const isDublicateUser = this.usersList.find(
+            (el) => el.value === user.displayName
+          );
+          if (isDublicateUser) {
+            return;
+          }
+
+          this.usersList.push({ value: user.displayName });
+        });
       });
   }
 

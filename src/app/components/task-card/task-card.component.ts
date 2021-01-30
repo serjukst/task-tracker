@@ -1,4 +1,4 @@
-import { ITask } from '../../interfaces';
+import { ITask } from '../../shared/interfaces';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({

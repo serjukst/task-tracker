@@ -1,4 +1,4 @@
-import { ITask } from './../interfaces';
+import { ITask } from '../shared/interfaces';
 import { FirestoreService } from './../services/firestore.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -27,14 +27,14 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsub$))
       .subscribe((result) => {
         this.tasks = result;
-        this.countToDoTask = result.filter((el) => el.status === 'todo').length;
+        this.countToDoTask = result.filter((el) => el.status === 'To Do').length;
         this.countProgressTask = result.filter(
-          (el) => el.status === 'progress'
+          (el) => el.status === 'In Progress'
         ).length;
         this.countReviewTask = result.filter(
-          (el) => el.status === 'review'
+          (el) => el.status === 'In Review'
         ).length;
-        this.countDoneTask = result.filter((el) => el.status === 'done').length;
+        this.countDoneTask = result.filter((el) => el.status === 'Done').length;
       });
   }
 

@@ -16,7 +16,7 @@
       <div class="task-card" *ngFor="let task of tasks">
         <app-task-card
           [task]="task"
-          *ngIf="task.status === 'todo'"
+          *ngIf="task.status === 'To Do'"
         ></app-task-card>
       </div>
     </div>
@@ -26,7 +26,7 @@
       <div class="task-card" *ngFor="let task of tasks">
         <app-task-card
           [task]="task"
-          *ngIf="task.status === 'progress'"
+          *ngIf="task.status === 'In Progress'"
         ></app-task-card>
       </div>
     </div>
@@ -36,7 +36,7 @@
       <div class="task-card" *ngFor="let task of tasks">
         <app-task-card
           [task]="task"
-          *ngIf="task.status === 'review'"
+          *ngIf="task.status === 'In Review'"
         ></app-task-card>
       </div>
     </div>
@@ -46,7 +46,7 @@
       <div class="task-card" *ngFor="let task of tasks">
         <app-task-card
           [task]="task"
-          *ngIf="task.status === 'done'"
+          *ngIf="task.status === 'Done'"
         ></app-task-card>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { AuthService } from '../../services/auth.service';
-import { IUser } from '../../interfaces';
+import { IUser } from '../../shared/interfaces';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';

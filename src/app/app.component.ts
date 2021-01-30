@@ -1,11 +1,11 @@
 import { takeUntil } from 'rxjs/operators';
 import { FirestoreService } from 'src/app/services/firestore.service';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import firebase from 'firebase/app';
-import { IUser } from './interfaces';
+import { IUser } from './shared/interfaces';
 
 @Component({
   selector: 'app-root',
