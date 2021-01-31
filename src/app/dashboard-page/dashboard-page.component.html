@@ -1,13 +1,37 @@
 <div class="container">
-  <button
-    mat-raised-button
-    color="primary"
-    class="create-task-button"
-    (click)="openDialog()"
-  >
-    <mat-icon>add_task</mat-icon>
-    Create task
-  </button>
+  <div class="buttons">
+    <button
+      mat-raised-button
+      color="primary"
+      class="create-task-button"
+      (click)="openDialog()"
+    >
+      <mat-icon>add_task</mat-icon>
+      Create task
+    </button>
+
+    <button
+      mat-raised-button
+      color="accent"
+      class="filter-button"
+      (click)="showCurrentUserTasks()"
+      *ngIf="!isFilterEnable"
+    >
+      <mat-icon>filter_alt</mat-icon>
+      My task
+    </button>
+
+    <button
+      mat-raised-button
+      color="accent"
+      class="filter-button"
+      (click)="showAllTasks()"
+      *ngIf="isFilterEnable"
+    >
+      <mat-icon>list_ail</mat-icon>
+      All tasks
+    </button>
+  </div>
 
   <div class="content-wrapper">
     <div

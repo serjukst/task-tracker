@@ -7,7 +7,7 @@ import {
 import { ISelectionOptions, ITask } from './../shared/interfaces';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -39,7 +39,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   public priorityTypes: ISelectionOptions[] = priorityTypes;
   public usersList: ISelectionOptions[] = [{ value: 'Unassigned' }];
 
-  constructor(private route: ActivatedRoute, private fs: FirestoreService) {}
+  constructor(private route: ActivatedRoute, private fs: FirestoreService, private router: Router) {}
 
   ngOnInit(): void {
     this.route.params
@@ -50,7 +50,6 @@ export class TaskPageComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.unsub$))
           .subscribe((task: ITask) => {
             this.task = task;
-            console.log(task);
             this.form.setValue({
               title: task.title,
               description: task.description,
@@ -87,5 +86,10 @@ export class TaskPageComponent implements OnInit, OnDestroy {
     this.unsub$.complete();
   }
 
-  submit() {}
+  public submit(): void {
+    const { dueDate } = this.form.value;
+    const updatedTask = { ...this.task, ...this.form.value, dueDate: dueDate.getTime() }
+    this.fs.updateTaskById(updatedTask);
+    this.router.navigate(['dashboard'])
+  }
 }

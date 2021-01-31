@@ -1,13 +1,14 @@
 .container {
-  max-width: 1080px;
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   padding: 1rem;
 }
 
-.create-task-button {
+.create-task-button, .filter-button {
   max-width: 200px;
-  margin-bottom: 1rem;
+  margin: 0 0 1rem 1rem;
 }
 
 .content-wrapper {

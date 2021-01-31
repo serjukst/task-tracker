@@ -1,29 +1,17 @@
 <mat-toolbar>
-  <a mat-button routerLink='/'>Task tracker</a>
+  <a mat-button routerLink="/dashboard" *ngIf="user">
+    <mat-icon>dashboard </mat-icon>
+    Dashboard
+  </a>
+  <h1 *ngIf="!user"> Task tracker</h1>
   <span class="spacer"></span>
   <button mat-button *ngIf="user">
     <mat-icon>person</mat-icon>
-    {{user?.displayName}}
+    {{ user?.displayName }}
   </button>
   <button mat-button (click)="signOut()" *ngIf="authState">
     <mat-icon>exit_to_app</mat-icon>
     Logout
   </button>
 </mat-toolbar>
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav mode="side" opened>
-    <div class="sidenav">
-      <button mat-button routerLink="dashboard">
-        <mat-icon>dashboard</mat-icon>
-        Dashboard
-      </button>
-      <button mat-button  *ngIf="authState">
-        <mat-icon>filter_alt</mat-icon>
-        My task
-      </button>
-    </div>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<router-outlet></router-outlet>

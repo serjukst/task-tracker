@@ -13,49 +13,47 @@
     <div class="add-task-form__selections">
       <div class="selection_first-column">
         <mat-form-field appearance="fill">
-        <mat-label>Task Type</mat-label>
-        <mat-select formControlName="type">
-          <mat-option *ngFor="let type of taskTypes" [value]="type.value">
-            {{ type.value }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Priority</mat-label>
-        <mat-select formControlName="priority">
-          <mat-option
-            *ngFor="let priority of priorityTypes"
-            [value]="priority.value"
-          >
-            {{ priority.value }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+          <mat-label>Task Type</mat-label>
+          <mat-select formControlName="type">
+            <mat-option *ngFor="let type of taskTypes" [value]="type.value">
+              {{ type.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Priority</mat-label>
+          <mat-select formControlName="priority">
+            <mat-option
+              *ngFor="let priority of priorityTypes"
+              [value]="priority.value"
+            >
+              {{ priority.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div class="selection_second-column">
         <mat-form-field appearance="fill">
-        <mat-label>Assignee</mat-label>
-        <mat-select formControlName="assignee">
-          <mat-option
-            *ngFor="let user of usersList"
-            [value]="user.value"
-          >
-            {{ user.value }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+          <mat-label>Assignee</mat-label>
+          <mat-select formControlName="assignee">
+            <mat-option *ngFor="let user of usersList" [value]="user.value">
+              {{ user.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Due Date</mat-label>
-        <input matInput formControlName="dueDate" [matDatepicker]="picker">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Due Date</mat-label>
+          <input matInput formControlName="dueDate" [matDatepicker]="picker" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
       </div>
-  
-      
     </div>
 
     <mat-form-field appearance="fill">
@@ -73,6 +71,15 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button (click)="submit()" mat-dialog-close cdkFocusInitial >Submit</button>
+  <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="submit()"
+    mat-dialog-close
+    cdkFocusInitial
+    [disabled]="form.invalid"
+  >
+    Submit
+  </button>
 </mat-dialog-actions>

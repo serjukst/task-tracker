@@ -3,6 +3,11 @@ mat-spinner {
 
 }
 
+.container {
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
 .edit-task-form {
   display: flex;
   flex-direction: column;
@@ -25,7 +30,6 @@ mat-spinner {
   &_second-column {
     display: flex;
     flex-direction: column;
-    margin-right: 1rem;
     width: 35%;
   }
 }

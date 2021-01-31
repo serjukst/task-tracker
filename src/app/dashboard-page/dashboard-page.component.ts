@@ -1,3 +1,4 @@
+import { AuthService } from './../services/auth.service';
 import { ITask } from '../shared/interfaces';
 import { FirestoreService } from './../services/firestore.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -11,6 +12,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -19,6 +21,8 @@ import {
 })
 export class DashboardPageComponent implements OnInit, OnDestroy {
   private unsub$ = new Subject<void>();
+  private currentUser;
+  public isFilterEnable = false;
   public tasks: ITask[];
 
   public toDoTasks: ITask[];
@@ -29,7 +33,9 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   constructor(
     private fs: FirestoreService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private auth: AuthService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -39,26 +45,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
       .subscribe(
         (result) => {
           this.tasks = result;
-          this.toDoTasks = [];
-          this.progressTasks = [];
-          this.reviewTasks = [];
-          this.doneTasks = [];
-          result.forEach((task) => {
-            switch (task.status) {
-              case 'To Do':
-                this.toDoTasks.push(task);
-                break;
-              case 'In Progress':
-                this.progressTasks.push(task);
-                break;
-              case 'In Review':
-                this.reviewTasks.push(task);
-                break;
-              case 'Done':
-                this.doneTasks.push(task);
-                break;
-            }
-          });
+          this.filterTasks(this.tasks);
         },
         (err) => {
           if (err.code === 'permission-denied') {
@@ -66,6 +53,9 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
           }
         }
       );
+    this.auth.authState
+      .pipe(takeUntil(this.unsub$))
+      .subscribe((res) => (this.currentUser = res.displayName));
   }
 
   ngOnDestroy(): void {
@@ -73,7 +63,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     this.unsub$.complete();
   }
 
-  drop(event: CdkDragDrop<string[]>) {
+  public drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -81,7 +71,6 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
         event.currentIndex
       );
     } else {
-      console.log(event.container);
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -109,7 +98,53 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  openDialog() {
+  public showCurrentUserTasks(): void {
+    const filterTasksByCurrentUser = this.tasks.filter(
+      (task) => task.assignee === this.currentUser
+    );
+
+    if (filterTasksByCurrentUser.length) {
+      this.filterTasks(filterTasksByCurrentUser);
+      this.isFilterEnable = true;
+    } else {
+      this.snackBar.open('You haven`t any assigned tasks', null, {
+        duration: 4000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+    }
+  }
+
+  public showAllTasks(): void {
+    this.filterTasks(this.tasks);
+    this.isFilterEnable = false;
+  }
+
+  public openDialog(): void {
     this.dialog.open(AddTaskComponent);
+  }
+
+  private filterTasks(tasks: ITask[]): void {
+    this.toDoTasks = [];
+    this.progressTasks = [];
+    this.reviewTasks = [];
+    this.doneTasks = [];
+
+    tasks.forEach((task) => {
+      switch (task.status) {
+        case 'To Do':
+          this.toDoTasks.push(task);
+          break;
+        case 'In Progress':
+          this.progressTasks.push(task);
+          break;
+        case 'In Review':
+          this.reviewTasks.push(task);
+          break;
+        case 'Done':
+          this.doneTasks.push(task);
+          break;
+      }
+    });
   }
 }
