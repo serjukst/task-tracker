@@ -1,3 +1,5 @@
+@import "variables";
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -6,7 +8,8 @@
   padding: 1rem;
 }
 
-.create-task-button, .filter-button {
+.create-task-button,
+.filter-button {
   max-width: 200px;
   margin: 0 0 1rem 1rem;
 }
@@ -24,7 +27,6 @@
   width: 250px;
 }
 
-
 .column-title {
   margin: 1rem 0 0;
 }
@@ -35,17 +37,17 @@
 }
 
 #mat-badge-content-0 {
-  background-color: #4E73DF;
-  color: #fff;
+  background-color: $darkBlue;
+  color: $white;
 }
 #mat-badge-content-1 {
-  background-color: #FDE83E;
+  background-color: $yellow;
 }
 #mat-badge-content-2 {
-  background-color: #36E4F7;
+  background-color: $lightBlue;
 }
 #mat-badge-content-3 {
-  background-color: #1BC789;
+  background-color: $green;
 }
 
 .cdk-drag-preview {

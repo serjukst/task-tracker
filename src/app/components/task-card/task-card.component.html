@@ -2,7 +2,7 @@
   <mat-card-header>
     <mat-card-title>
       <p class="task__title">
-        <a [routerLink]="task.customID">{{task.title }} {{ task.sequence }}</a>
+        <a [routerLink]="task.customID">{{ task.title }} {{ task.sequence }}</a>
       </p>
     </mat-card-title>
   </mat-card-header>
@@ -15,23 +15,23 @@
     <div class="task__footer">
       <p class="task__details">
         <ng-container [ngSwitch]="task.type">
-          <mat-icon *ngSwitchCase="'New Feature'" aria-hidden="false" color="primary">add_box</mat-icon>
-          <mat-icon *ngSwitchCase="'Epic'" aria-hidden="false" >flash_on</mat-icon>
-          <mat-icon *ngSwitchCase="'User Story'" aria-hidden="false" >bookmark</mat-icon>
-          <mat-icon *ngSwitchCase="'Task'" aria-hidden="false" >check_box</mat-icon>
-          <mat-icon *ngSwitchCase="'Bug'" aria-hidden="false" >bug_report</mat-icon>
+          <mat-icon *ngSwitchCase="'New Feature'" class="new-feature">add_box</mat-icon>
+          <mat-icon *ngSwitchCase="'Epic'" class="epic">flash_on</mat-icon>
+          <mat-icon *ngSwitchCase="'User Story'" class="user-story">bookmark</mat-icon>
+          <mat-icon *ngSwitchCase="'Task'" class="task-icon">check_box</mat-icon>
+          <mat-icon *ngSwitchCase="'Bug'" class="bug">bug_report</mat-icon>
         </ng-container>
 
         <ng-container [ngSwitch]="task.priority">
-          <mat-icon *ngSwitchCase="'Trivial'" aria-hidden="false" >south</mat-icon>
-          <mat-icon *ngSwitchCase="'Blocker'" aria-hidden="false" >block</mat-icon>
-          <mat-icon *ngSwitchCase="'Critical'" aria-hidden="false" >warning</mat-icon>
-          <mat-icon *ngSwitchCase="'Major'" aria-hidden="false" >double_arrow</mat-icon>
-          <mat-icon *ngSwitchCase="'Minor'" aria-hidden="false" >expand_more</mat-icon>
+          <mat-icon *ngSwitchCase="'Trivial'" class="trivial">south</mat-icon>
+          <mat-icon *ngSwitchCase="'Blocker'" class="blocker">block</mat-icon>
+          <mat-icon *ngSwitchCase="'Critical'" class="critical">warning</mat-icon>
+          <mat-icon *ngSwitchCase="'Major'" class="major">double_arrow</mat-icon>
+          <mat-icon *ngSwitchCase="'Minor'" class="minor">expand_more</mat-icon>
         </ng-container>
       </p>
       <div mat-card-avatar class="task__footer_avatar">
-        {{ task?.assignee[0] | uppercase}}
+        {{ task?.assignee[0] | uppercase }}
       </div>
     </div>
   </mat-card-footer>

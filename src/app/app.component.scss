@@ -1,23 +1,9 @@
-.sidenav-container {
-  position: absolute;
-  top: 60px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #eee;
-}
-
+@import 'variables';
 .spacer {
   flex: 1 1 auto;
 }
 
-mat-sidenav, 
 mat-toolbar {
-  background-color: #673AB7;
-  color: #fff;
-}
-
-.sidenav {
-  display: flex;
-  flex-direction: column;
+  background-color: $primary;
+  color: $white;
 }

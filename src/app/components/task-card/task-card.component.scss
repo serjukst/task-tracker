@@ -1,3 +1,5 @@
+@import "variables";
+
 .task {
   width: 200px;
   overflow: hidden;
@@ -8,40 +10,50 @@
   }
 
   &__content {
-
     &_description {
-      font-size: .8rem;
-      height: 50px;
+      font-size: 0.8rem;
+      height: 60px;
       overflow: hidden;
-    }
-  
-    &_labels {
-      span {
-        padding: .3rem;
-        margin-right: .3rem;
-        border-radius: .3rem;
-        background-color: #673AB7; //TODO: Change to variable
-        font-size: .6rem;
-        color: #fff; //TODO: Change to variable
-      }
+      margin: 0;
     }
   }
-
 
   &__footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 0 1rem 0.5rem;
 
-    &_avatar{
+    &_avatar {
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 50%;
-      background-color: #673AB7;
+      background-color: $primary;
       font-weight: bold;
-      color: #fff;
+      color: $white;
+      width: 30px;
+      height: 30px;
     }
   }
+}
+
+.new-feature, .minor, .trivial {
+  color: $green;
+}
+
+.epic {
+  color: $lightBlue;
+}
+
+.user-story {
+  color: $yellow;
+}
+
+.task-icon {
+  color: $darkBlue;
+}
+
+.bug, .major, .blocker, .critical {
+  color: $red;
 }

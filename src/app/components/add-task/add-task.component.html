@@ -6,7 +6,7 @@
       <mat-label>Title</mat-label>
       <input matInput formControlName="title" required />
       <mat-error *ngIf="form.get('title').errors?.required"
-        >Field is required</mat-error
+        >Title is required</mat-error
       >
     </mat-form-field>
 
@@ -60,7 +60,7 @@
       <mat-label>Description</mat-label>
       <input matInput formControlName="description" required />
       <mat-error *ngIf="form.get('description').errors?.required"
-        >Field is required</mat-error
+        >Description is required</mat-error
       >
     </mat-form-field>
 
@@ -77,7 +77,6 @@
     color="primary"
     (click)="submit()"
     mat-dialog-close
-    cdkFocusInitial
     [disabled]="form.invalid"
   >
     Submit

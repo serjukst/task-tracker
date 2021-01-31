@@ -92,4 +92,8 @@ export class TaskPageComponent implements OnInit, OnDestroy {
     this.fs.updateTaskById(updatedTask);
     this.router.navigate(['dashboard'])
   }
+
+  public cancel(): void {
+    this.router.navigate(['dashboard'])
+  }
 }

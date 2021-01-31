@@ -1,4 +1,9 @@
-import { taskTypes, priorityTypes, taskStatus, taskResolution } from './../../shared/constants';
+import {
+  taskTypes,
+  priorityTypes,
+  taskStatus,
+  taskResolution,
+} from './../../shared/constants';
 import { ISelectionOptions } from './../../shared/interfaces';
 import { takeUntil } from 'rxjs/operators';
 import { ITask } from '../../shared/interfaces';
@@ -18,7 +23,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
 
   public taskTypes: ISelectionOptions[] = taskTypes;
   public priorityTypes: ISelectionOptions[] = priorityTypes;
-
   public usersList: ISelectionOptions[] = [{ value: 'Unassigned' }];
 
   constructor(private fs: FirestoreService) {}
@@ -46,7 +50,9 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsub$))
       .subscribe((result) => {
         result.forEach((user) => {
-          const isDublicateUser = this.usersList.find(el => el.value === user.displayName);
+          const isDublicateUser = this.usersList.find(
+            (el) => el.value === user.displayName
+          );
           if (isDublicateUser) {
             return;
           }

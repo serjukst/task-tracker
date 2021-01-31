@@ -1,3 +1,4 @@
+import { IUser } from './../shared/interfaces';
 import { AuthService } from './../services/auth.service';
 import { ITask } from '../shared/interfaces';
 import { FirestoreService } from './../services/firestore.service';
@@ -21,7 +22,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class DashboardPageComponent implements OnInit, OnDestroy {
   private unsub$ = new Subject<void>();
-  private currentUser;
+  private currentUser: IUser;
   public isFilterEnable = false;
   public tasks: ITask[];
 
@@ -45,7 +46,11 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
       .subscribe(
         (result) => {
           this.tasks = result;
-          this.filterTasks(this.tasks);
+          if (this.isFilterEnable) {
+            this.showCurrentUserTasks();
+          } else {
+            this.filterTasks(this.tasks);
+          }
         },
         (err) => {
           if (err.code === 'permission-denied') {
@@ -53,9 +58,24 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
           }
         }
       );
-    this.auth.authState
-      .pipe(takeUntil(this.unsub$))
-      .subscribe((res) => (this.currentUser = res.displayName));
+
+    this.auth.authState.pipe(takeUntil(this.unsub$)).subscribe((result) => {
+      if (result) {
+        this.fs
+          .getCurrentUser(result.uid)
+          .pipe(takeUntil(this.unsub$))
+          .subscribe(
+            (user) => {
+              this.currentUser = user;
+            },
+            (err) => {
+              if (err.code === 'permission-denied') {
+                this.router.navigate(['/login']);
+              }
+            }
+          );
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -81,16 +101,16 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
       const dropedTask: any = event.container.data[event.currentIndex];
 
       switch (event.container.id) {
-        case 'cdk-drop-list-0':
+        case 'todo':
           dropedTask.status = 'To Do';
           break;
-        case 'cdk-drop-list-1':
+        case 'in-progress':
           dropedTask.status = 'In Progress';
           break;
-        case 'cdk-drop-list-2':
+        case 'in-review':
           dropedTask.status = 'In Review';
           break;
-        case 'cdk-drop-list-3':
+        case 'done':
           dropedTask.status = 'Done';
           break;
       }
@@ -100,7 +120,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
 
   public showCurrentUserTasks(): void {
     const filterTasksByCurrentUser = this.tasks.filter(
-      (task) => task.assignee === this.currentUser
+      (task) => task.assignee === this.currentUser.displayName
     );
 
     if (filterTasksByCurrentUser.length) {
