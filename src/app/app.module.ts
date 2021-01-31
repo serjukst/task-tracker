@@ -8,8 +8,6 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomePageComponent } from './home-page/home-page.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { EmailLoginFormComponent } from './components/email-login-form/email-login-form.component';
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
@@ -39,8 +37,6 @@ import { RegisterPageComponent } from './register-page/register-page.component';
 @NgModule({
   declarations: [
     AppComponent,
-    HomePageComponent,
-    NavbarComponent,
     LoginPageComponent,
     EmailLoginFormComponent,
     DashboardPageComponent,

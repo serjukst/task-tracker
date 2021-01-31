@@ -10,44 +10,80 @@
   </button>
 
   <div class="content-wrapper">
-    <div class="column to-do">
-      <h2 class="column-title" [matBadge]="countToDoTask" matBadgeColor="accent">To Do</h2>
+    <div
+      class="column to-do"
+      cdkDropList
+      #toDoTasksList="cdkDropList"
+      [cdkDropListData]="toDoTasks"
+      [cdkDropListConnectedTo]="[
+        progressTasksList,
+        reviewTasksList,
+        doneTasksList
+      ]"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <h2
+        class="column-title"
+        [matBadge]="toDoTasks?.length"
+        matBadgeColor="accent"
+      >
+        To Do
+      </h2>
       <mat-divider></mat-divider>
-      <div class="task-card" *ngFor="let task of tasks">
-        <app-task-card
-          [task]="task"
-          *ngIf="task.status === 'To Do'"
-        ></app-task-card>
+      <div class="task-card" *ngFor="let task of toDoTasks" cdkDrag>
+        <app-task-card [task]="task"></app-task-card>
       </div>
     </div>
-    <div class="column in-progress">
-      <h2 class="column-title" [matBadge]="countProgressTask">In Progress</h2>
+    <div
+      class="column in-progress"
+      cdkDropList
+      #progressTasksList="cdkDropList"
+      [cdkDropListData]="progressTasks"
+      [cdkDropListConnectedTo]="[toDoTasksList, reviewTasksList, doneTasksList]"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <h2 class="column-title" [matBadge]="progressTasks?.length">
+        In Progress
+      </h2>
       <mat-divider></mat-divider>
-      <div class="task-card" *ngFor="let task of tasks">
-        <app-task-card
-          [task]="task"
-          *ngIf="task.status === 'In Progress'"
-        ></app-task-card>
+      <div class="task-card" *ngFor="let task of progressTasks" cdkDrag>
+        <app-task-card [task]="task"></app-task-card>
       </div>
     </div>
-    <div class="column in-review">
-      <h2 class="column-title" [matBadge]="countReviewTask">In Review</h2>
+    <div
+      class="column in-review"
+      cdkDropList
+      #reviewTasksList="cdkDropList"
+      [cdkDropListData]="reviewTasks"
+      [cdkDropListConnectedTo]="[
+        toDoTasksList,
+        progressTasksList,
+        doneTasksList
+      ]"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <h2 class="column-title" [matBadge]="reviewTasks?.length">In Review</h2>
       <mat-divider></mat-divider>
-      <div class="task-card" *ngFor="let task of tasks">
-        <app-task-card
-          [task]="task"
-          *ngIf="task.status === 'In Review'"
-        ></app-task-card>
+      <div class="task-card" *ngFor="let task of reviewTasks" cdkDrag>
+        <app-task-card [task]="task"></app-task-card>
       </div>
     </div>
-    <div class="column done">
-      <h2 class="column-title" [matBadge]="countDoneTask">Done</h2>
+    <div
+      class="column done"
+      cdkDropList
+      #doneTasksList="cdkDropList"
+      [cdkDropListData]="doneTasks"
+      [cdkDropListConnectedTo]="[
+        toDoTasksList,
+        progressTasksList,
+        reviewTasksList
+      ]"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <h2 class="column-title" [matBadge]="doneTasks?.length">Done</h2>
       <mat-divider></mat-divider>
-      <div class="task-card" *ngFor="let task of tasks">
-        <app-task-card
-          [task]="task"
-          *ngIf="task.status === 'Done'"
-        ></app-task-card>
+      <div class="task-card" *ngFor="let task of doneTasks" cdkDrag>
+        <app-task-card [task]="task"></app-task-card>
       </div>
     </div>
   </div>
