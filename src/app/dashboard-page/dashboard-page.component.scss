@@ -36,17 +36,21 @@
   margin-bottom: 0.5rem;
 }
 
-#mat-badge-content-0 {
+#mat-badge-content-0,
+#mat-badge-content-5 {
   background-color: $darkBlue;
   color: $white;
 }
-#mat-badge-content-1 {
+#mat-badge-content-1,
+#mat-badge-content-6 {
   background-color: $yellow;
 }
-#mat-badge-content-2 {
+#mat-badge-content-2,
+#mat-badge-content-6 {
   background-color: $lightBlue;
 }
-#mat-badge-content-3 {
+#mat-badge-content-3,
+#mat-badge-content-7 {
   background-color: $green;
 }
 
