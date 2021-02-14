@@ -1,5 +1,5 @@
-import { ITask } from '../../shared/interfaces';
 import { Component, Input, OnInit } from '@angular/core';
+import { ITask } from '../../shared/interfaces';
 
 @Component({
   selector: 'app-task-card',

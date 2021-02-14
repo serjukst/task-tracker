@@ -1,16 +1,17 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { FirestoreService } from 'src/app/services/firestore.service';
+import { ITask, ISelectionOptions } from '../../shared/interfaces';
 import {
   taskTypes,
   priorityTypes,
   taskStatus,
   taskResolution,
 } from './../../shared/constants';
-import { ISelectionOptions } from './../../shared/interfaces';
-import { takeUntil } from 'rxjs/operators';
-import { ITask } from '../../shared/interfaces';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FirestoreService } from 'src/app/services/firestore.service';
-import { Subject } from 'rxjs';
+
 @Component({
   selector: 'app-add-task',
   templateUrl: './add-task.component.html',
@@ -38,28 +39,22 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       dueDate: new FormControl(new Date()),
     });
 
-    this.fs
-      .getTasks()
-      .pipe(takeUntil(this.unsub$))
-      .subscribe((result) => {
-        this.nextSequence = result.length + 1;
-      });
+    this.fs.tasks.pipe(takeUntil(this.unsub$)).subscribe((result) => {
+      this.nextSequence = result.length + 1;
+    });
 
-    this.fs
-      .getUsers()
-      .pipe(takeUntil(this.unsub$))
-      .subscribe((result) => {
-        result.forEach((user) => {
-          const isDublicateUser = this.usersList.find(
-            (el) => el.value === user.displayName
-          );
-          if (isDublicateUser) {
-            return;
-          }
+    this.fs.users.pipe(takeUntil(this.unsub$)).subscribe((result) => {
+      result.forEach((user) => {
+        const isDublicateUser = this.usersList.find(
+          (el) => el.value === user.displayName
+        );
+        if (isDublicateUser) {
+          return;
+        }
 
-          this.usersList.push({ value: user.displayName });
-        });
+        this.usersList.push({ value: user.displayName });
       });
+    });
   }
 
   ngOnDestroy(): void {

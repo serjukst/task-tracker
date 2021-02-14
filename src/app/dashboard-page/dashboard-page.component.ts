@@ -1,19 +1,21 @@
-import { IUser } from './../shared/interfaces';
-import { AuthService } from './../services/auth.service';
-import { ITask } from '../shared/interfaces';
-import { FirestoreService } from './../services/firestore.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
-import { AddTaskComponent } from '../components/add-task/add-task.component';
-import { takeUntil } from 'rxjs/internal/operators';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
+
+import { AuthService } from './../services/auth.service';
+import { FirestoreService } from './../services/firestore.service';
+
+import { ITask, IUser } from '../shared/interfaces';
+import { AddTaskComponent } from '../components/add-task/add-task.component';
+
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -24,8 +26,8 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   private unsub$ = new Subject<void>();
   private currentUser: IUser;
   public isFilterEnable = false;
-  public tasks: ITask[];
 
+  public tasks: ITask[];
   public toDoTasks: ITask[];
   public progressTasks: ITask[];
   public reviewTasks: ITask[];
@@ -33,49 +35,32 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private fs: FirestoreService,
-    public dialog: MatDialog,
     private router: Router,
     private auth: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.fs
-      .getTasks()
-      .pipe(takeUntil(this.unsub$))
-      .subscribe(
-        (result) => {
-          this.tasks = result;
-          if (this.isFilterEnable) {
-            this.showCurrentUserTasks();
-          } else {
-            this.filterTasks(this.tasks);
-          }
-        },
-        (err) => {
-          if (err.code === 'permission-denied') {
-            this.router.navigate(['/login']);
-          }
-        }
-      );
+    this.fs.tasks.pipe(takeUntil(this.unsub$)).subscribe(
+      (result) => {
+        this.tasks = result;
+        this.isFilterEnable
+          ? this.showCurrentUserTasks
+          : this.filterTasks(this.tasks);
+      },
+      (err) => this.handlePermissionError(err)
+    );
 
-    this.auth.authState.pipe(takeUntil(this.unsub$)).subscribe((result) => {
-      if (result) {
-        this.fs
-          .getCurrentUser(result.uid)
-          .pipe(takeUntil(this.unsub$))
-          .subscribe(
-            (user) => {
-              this.currentUser = user;
-            },
-            (err) => {
-              if (err.code === 'permission-denied') {
-                this.router.navigate(['/login']);
-              }
-            }
-          );
-      }
-    });
+    this.auth.authState
+      .pipe(
+        takeUntil(this.unsub$),
+        switchMap((user) => this.fs.getCurrentUser(user.uid))
+      )
+      .subscribe(
+        (res) => (this.currentUser = res),
+        (err) => this.handlePermissionError(err)
+      );
   }
 
   ngOnDestroy(): void {
@@ -166,5 +151,11 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
           break;
       }
     });
+  }
+
+  private handlePermissionError(err): void {
+    if (err.code === 'permission-denied') {
+      this.router.navigate(['/login']);
+    }
   }
 }

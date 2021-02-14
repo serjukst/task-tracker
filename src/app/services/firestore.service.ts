@@ -1,26 +1,25 @@
 import { Observable } from 'rxjs';
 import { ITask, IUser } from '../shared/interfaces';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class FirestoreService {
-  constructor(private afs: AngularFirestore) {}
+  private taskColection: AngularFirestoreCollection<ITask>;
+  private userColection: AngularFirestoreCollection<IUser>;
+  public tasks: Observable<ITask[]>;
+  public users: Observable<IUser[]>;
 
-  public getTasks(): Observable<ITask[]> {
-    return this.afs
-      .collection<ITask>('tasks')
-      .valueChanges({ idField: 'customID' });
-  }
+  constructor(private afs: AngularFirestore) {
+    this.taskColection = afs.collection<ITask>('tasks');
+    this.userColection = afs.collection<IUser>('users');
 
-  public getUsers(): Observable<IUser[]> {
-    return this.afs
-      .collection<IUser>('users')
-      .valueChanges();
+    this.tasks = this.taskColection.valueChanges({ idField: 'customID' });
+    this.users = this.userColection.valueChanges();
   }
 
   public addUser(user: IUser):void {
-    this.afs.collection<IUser>('users').doc(user.uid).set(user);
+    this.userColection.doc(user.uid).set(user);
   }
 
   public getCurrentUser(userId: string):Observable<IUser> {
@@ -29,10 +28,10 @@ export class FirestoreService {
 
   public addTask(task: ITask): void {
     const id = this.afs.createId();
-    this.afs.collection<ITask>('tasks').doc(id).set(task);
+    this.taskColection.doc(id).set(task);
   }
 
-  public updateTaskById(task: ITask) {
+  public updateTaskById(task: ITask): void {
     this.afs.doc<ITask>(`tasks/${task.customID}`).update(task);
   }
 

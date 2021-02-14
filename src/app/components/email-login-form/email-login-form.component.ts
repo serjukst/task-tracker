@@ -1,8 +1,10 @@
-import { AuthService } from '../../services/auth.service';
-import { IUser } from '../../shared/interfaces';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
+import { AuthService } from '../../services/auth.service';
+import { IUser } from '../../shared/interfaces';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -29,10 +31,11 @@ export class EmailLoginFormComponent implements OnInit {
     });
   }
 
-  public async submit(): Promise<void> {
+  public submit(): Promise<void> {
     if (this.form.invalid) {
       return;
     }
+
     const user: IUser = this.form.value;
 
     this.auth

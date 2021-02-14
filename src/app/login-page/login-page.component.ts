@@ -1,10 +1,10 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { FirestoreService } from './../services/firestore.service';
 import { AuthService } from './../services/auth.service';
-import { Component, OnInit } from '@angular/core';
-import {
-  MatSnackBar,
-} from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login-page',
@@ -25,7 +25,7 @@ export class LoginPageComponent implements OnInit {
     this.auth
       .loginWithGoogle()
       .then((result) => {
-        const { uid, email, displayName } = result.user
+        const { uid, email, displayName } = result.user;
         this.fs.addUser({ uid, email, displayName });
         this.router.navigate(['dashboard']);
       })

@@ -1,10 +1,12 @@
-import { takeUntil } from 'rxjs/operators';
-import { FirestoreService } from 'src/app/services/firestore.service';
-import { Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from './services/auth.service';
+
+import { Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
+
 import firebase from 'firebase/app';
+import { FirestoreService } from 'src/app/services/firestore.service';
+import { AuthService } from './services/auth.service';
 import { IUser } from './shared/interfaces';
 
 @Component({
@@ -24,17 +26,15 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.auth.authState.pipe(takeUntil(this.unsub$)).subscribe((result) => {
-      this.authState = result;
-      if (result) {
-        this.fs
-          .getCurrentUser(result.uid)
-          .pipe(takeUntil(this.unsub$))
-          .subscribe((user) => {
-            this.user = user;
-          });
-      }
-    });
+    this.auth.authState
+      .pipe(
+        takeUntil(this.unsub$),
+        switchMap((result) => {
+          this.authState = result;
+          return this.fs.getCurrentUser(result.uid);
+        })
+      )
+      .subscribe((user) => (this.user = user));
   }
 
   ngOnDestroy(): void {
@@ -47,6 +47,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.unsub$.complete();
     this.user = null;
     this.router.navigate(['/login']);
-    this.auth.signOut().catch(err => console.log(err));
+    this.auth.signOut();
   }
 }
